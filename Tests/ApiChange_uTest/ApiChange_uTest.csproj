@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BB811F60-35CF-42F7-9A62-B2C796673A9A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UnitTests</RootNamespace>
+    <AssemblyName>ApiChange_uTest</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Cecil, Version=0.6.8.8607, Culture=neutral, PublicKeyToken=c04d82a8546dde85, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.5.3.9345, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Infrastructure\AggregateExceptionTests.cs" />
+    <Compile Include="Infrastructure\AsyncWriterTests.cs" />
+    <Compile Include="Infrastructure\BlockingQueueTests.cs" />
+    <Compile Include="Infrastructure\Diagnostics\TraceCfgParserTests.cs" />
+    <Compile Include="Infrastructure\DirectorySearcherAsyncTests.cs" />
+    <Compile Include="Infrastructure\Diagnostics\TracerTests.cs" />
+    <Compile Include="Infrastructure\CorFlagsReaderTests.cs" />
+    <Compile Include="Infrastructure\WorkItemDispatcherTests.cs" />
+    <Compile Include="Introspection\AssemblyDifferTests.cs" />
+    <Compile Include="Introspection\eventquerytests.cs" />
+    <Compile Include="Introspection\ExtensionTests.cs" />
+    <Compile Include="Introspection\FieldQueryTests.cs" />
+    <Compile Include="Introspection\GenericTypeMapperTests.cs" />
+    <Compile Include="Introspection\MatcherTests.cs" />
+    <Compile Include="Introspection\MethodQueryTests.cs" />
+    <Compile Include="Introspection\typedifftests.cs" />
+    <Compile Include="Introspection\TypeQueryFactoryTests.cs" />
+    <Compile Include="Introspection\TypeQueryTests.cs" />
+    <Compile Include="Scripting\CommandTestBase.cs" />
+    <Compile Include="Scripting\DiffAssembliesCommandTests.cs" />
+    <Compile Include="Scripting\GetFileInfoCommandTests.cs" />
+    <Compile Include="Scripting\ShowReferencesCommandTests.cs" />
+    <Compile Include="Scripting\ShowStrongNameCommandTests.cs" />
+    <Compile Include="Scripting\DownLoadPdbsCommandTests.cs" />
+    <Compile Include="Scripting\FileQueriesTests.cs" />
+    <Compile Include="Scripting\NoneCommandTests.cs" />
+    <Compile Include="Scripting\ShowRebuildTargetsTests.cs" />
+    <Compile Include="Scripting\WhoImplementsInterfaceCommandTests.cs" />
+    <Compile Include="Scripting\WhoReferencesCommandTests.cs" />
+    <Compile Include="Scripting\WhoUsesEventCommandTests.cs" />
+    <Compile Include="Scripting\WhoUsesFieldCommandTests.cs" />
+    <Compile Include="Scripting\WhoUsesMethodCommandTests.cs" />
+    <Compile Include="Scripting\WhoUsesStringConstantCommandTests.cs" />
+    <Compile Include="Scripting\WhoUsesTypeCommandTests.cs" />
+    <Compile Include="TestHelper\PerformanceMeasurement.cs" />
+    <Compile Include="TestHelper\SetReset.cs" />
+    <Compile Include="TestHelper\StringListTraceListener.cs" />
+    <Compile Include="TestHelper\TestConstants.cs" />
+    <Compile Include="TestHelper\TestHelper.cs" />
+    <Compile Include="TestHelper\TraceReset.cs" />
+    <Compile Include="TestHelper\TracingTestFixture.cs" />
+    <Compile Include="UsageQueries\WhoDerivesFromTypeTests.cs" />
+    <Compile Include="UsageQueries\WhoHasFieldOfTypeTests.cs" />
+    <Compile Include="UsageQueries\WhoImplementsInterfaceTests.cs" />
+    <Compile Include="UsageQueries\WhoInstantiatesTypeTests.cs" />
+    <Compile Include="UsageQueries\WhoReferencesAssemblyTests.cs" />
+    <Compile Include="UsageQueries\WhoUsesEventTests.cs" />
+    <Compile Include="UsageQueries\WhoAccessesFieldTests.cs" />
+    <Compile Include="UsageQueries\WhoUsesMethodTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UsageQueries\WhoUsesStringConstantTests.cs" />
+    <Compile Include="UsageQueries\WhoUsesTypeTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ApiChange.Api\src\ApiChange.Api.csproj">
+      <Project>{BFBCCA96-BE1E-4DD7-B3CF-5DFAB38B8AB1}</Project>
+      <Name>ApiChange.Api</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

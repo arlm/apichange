@@ -1,0 +1,6 @@
+CSSOURCES(Program)
+
+EXTLDLIBS(System.Core.dll)
+LDLIBS(ApiChange.Api)
+
+PROCESS(ApiChange)

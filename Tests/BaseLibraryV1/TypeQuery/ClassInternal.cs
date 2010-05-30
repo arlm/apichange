@@ -1,0 +1,16 @@
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace BaseLibrary.TypeQuery
+{
+    class ClassInternal
+    {
+        class NestedClass
+        {
+
+        }
+    }
+}

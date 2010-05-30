@@ -1,0 +1,12 @@
+syntax: glob
+
+*.suo
+*.VisualState.xml
+TestResult.xml
+*.obj
+*.user
+[bB]in
+[dD]ebug*/
+obj/
+[rRelease*]
+[Bb]ulid[Ll]log.*

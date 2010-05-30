@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BFBCCA96-BE1E-4DD7-B3CF-5DFAB38B8AB1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ApiChange.Api</RootNamespace>
+    <AssemblyName>ApiChange.Api</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <DocumentationFile>..\..\bin\Debug\ApiChange.Api.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Interop.ClearCase, Version=5.0.0.0, Culture=neutral, PublicKeyToken=008145f79b9aec14, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Interop.ClearCase.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+    <Reference Include="Mono.Cecil, Version=0.6.8.8607, Culture=neutral, PublicKeyToken=c04d82a8546dde85, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Pdb, Version=0.2.0.0, Culture=neutral, PublicKeyToken=008145f79b9aec14, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Mono.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ExternalData\ADQuery.cs" />
+    <Compile Include="ExternalData\ClearCaseToADMapper.cs" />
+    <Compile Include="ExternalData\IFileInformationProvider.cs" />
+    <Compile Include="ExternalData\SiteConstants.cs" />
+    <Compile Include="ExternalData\UserInfo.cs" />
+    <Compile Include="Infrastructure\AggregateException.cs" />
+    <Compile Include="Infrastructure\Diagnostics\InternalError.cs" />
+    <Compile Include="Infrastructure\Diagnostics\LazyFormat.cs" />
+    <Compile Include="Infrastructure\Diagnostics\MessageTypes.cs" />
+    <Compile Include="Infrastructure\Diagnostics\NullTraceListener.cs" />
+    <Compile Include="Infrastructure\Diagnostics\TraceCfgParser.cs" />
+    <Compile Include="Infrastructure\Diagnostics\TraceFilterMatchAll.cs" />
+    <Compile Include="Infrastructure\Diagnostics\TraceFilterNone.cs" />
+    <Compile Include="Infrastructure\Diagnostics\TracerConfig.cs" />
+    <Compile Include="Infrastructure\Diagnostics\TraceFilter.cs" />
+    <Compile Include="Infrastructure\exceptionhelper.cs" />
+    <Compile Include="Infrastructure\AsyncWriter.cs" />
+    <Compile Include="Infrastructure\BlockingQueue.cs" />
+    <Compile Include="Infrastructure\BlockingQueueAggregator.cs" />
+    <Compile Include="Infrastructure\DirectorySearcherAsync.cs" />
+    <Compile Include="Infrastructure\FileNameComparer.cs" />
+    <Compile Include="Infrastructure\filequery.cs" />
+    <Compile Include="Infrastructure\Diagnostics\Tracer.cs" />
+    <Compile Include="Infrastructure\Diagnostics\TypeHandle.cs" />
+    <Compile Include="Infrastructure\WorkItemDispatcher.cs" />
+    <Compile Include="Infrastructure\WorkItemDispatcherData.cs" />
+    <Compile Include="Infrastructure\WorkItemOptions.cs" />
+    <Compile Include="Introspection\AssemblyLoader.cs" />
+    <Compile Include="Introspection\Diff\BreakingChangeSearcher.cs" />
+    <Compile Include="Introspection\Diff\DiffCollection.cs" />
+    <Compile Include="Introspection\Diff\DiffPrinter.cs" />
+    <Compile Include="Introspection\Diff\DiffResult.cs" />
+    <Compile Include="Introspection\Diff\DiffOperation.cs" />
+    <Compile Include="Introspection\ISymChkExecutor.cs" />
+    <Compile Include="Introspection\CorFlagsReader.cs" />
+    <Compile Include="Introspection\PdbInformationReader.cs" />
+    <Compile Include="Introspection\Query\BaseQuery.cs" />
+    <Compile Include="Introspection\Query\EventQuery.cs" />
+    <Compile Include="Introspection\Query\FieldQuery.cs" />
+    <Compile Include="Introspection\Query\GenericTypeMapper.cs" />
+    <Compile Include="Introspection\Query\Matcher.cs" />
+    <Compile Include="Introspection\Query\TypeQueryFactory.cs" />
+    <Compile Include="Introspection\Query\UsageQueries\MatchContext.cs" />
+    <Compile Include="Introspection\Query\UsageQueries\WhoAccessesField.cs" />
+    <Compile Include="Introspection\Query\UsageQueries\WhoDerivesFromType.cs" />
+    <Compile Include="Introspection\Query\UsageQueries\WhoHasFieldOfType.cs" />
+    <Compile Include="Introspection\Query\UsageQueries\WhoImplementsInterface.cs" />
+    <Compile Include="Introspection\Query\UsageQueries\WhoInstantiatesType.cs" />
+    <Compile Include="Introspection\Query\UsageQueries\WhoReferencesAssembly.cs" />
+    <Compile Include="Introspection\Query\UsageQueries\WhoUsesEvents.cs" />
+    <Compile Include="Introspection\Query\UsageQueries\WhoUsesMethod.cs" />
+    <Compile Include="Introspection\Query\MethodQuery.cs" />
+    <Compile Include="Introspection\Query\QueryAggregator.cs" />
+    <Compile Include="Introspection\Query\UsageQueries\QueryResult.cs" />
+    <Compile Include="Introspection\Query\TypeQuery.cs" />
+    <Compile Include="Introspection\Query\TypeQueryMode.cs" />
+    <Compile Include="Introspection\Query\UsageQueries\UsageQueryAggregator.cs" />
+    <Compile Include="Introspection\Query\UsageQueries\UsageVisitor.cs" />
+    <Compile Include="Introspection\Query\UsageQueries\WhoUsesStringConstant.cs" />
+    <Compile Include="Introspection\Query\UsageQueries\WhoUsesType.cs" />
+    <Compile Include="Introspection\PdbDownLoader.cs" />
+    <Compile Include="Introspection\SymChkExecutor.cs" />
+    <Compile Include="Introspection\Types\FieldPrintOptions.cs" />
+    <Compile Include="Introspection\ListDiffer.cs" />
+    <Compile Include="Introspection\Types\FilterFunctions.cs" />
+    <Compile Include="Introspection\Types\MethodPrintOption.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripting\CommandData.cs" />
+    <Compile Include="Scripting\CommandParser.cs" />
+    <Compile Include="Introspection\Diff\AssemblyDiffer.cs" />
+    <Compile Include="Introspection\Diff\TypeDiff.cs" />
+    <Compile Include="Introspection\Diff\AssemblyDiffCollection.cs" />
+    <Compile Include="Introspection\Types\Extensions.cs" />
+    <Compile Include="Introspection\Types\TypeMapper.cs" />
+    <Compile Include="Scripting\Commands.cs" />
+    <Compile Include="Scripting\Commands\CommandBase.cs" />
+    <Compile Include="Scripting\Commands\CorFlagsCommand.cs" />
+    <Compile Include="Scripting\Commands\Output\ColumnInfo.cs" />
+    <Compile Include="Scripting\Commands\Output\ExcelOptions.cs" />
+    <Compile Include="Scripting\Commands\Output\ExcelOutputWriter.cs" />
+    <Compile Include="Scripting\Commands\Output\SheetInfo.cs" />
+    <Compile Include="Scripting\Commands\GetFileInfoCommand.cs" />
+    <Compile Include="Scripting\Commands\Output\IOutputWriter.cs" />
+    <Compile Include="Scripting\Commands\Output\TextOutputWriter.cs" />
+    <Compile Include="Scripting\Commands\ShowReferencesCommand.cs" />
+    <Compile Include="Scripting\Commands\ShowStrongNameCommand.cs" />
+    <Compile Include="Scripting\Commands\NoneCommand.cs" />
+    <Compile Include="Scripting\Commands\QueryCommandBase.cs" />
+    <Compile Include="Scripting\Commands\ShowRebuildTargetsCommand.cs" />
+    <Compile Include="Scripting\Commands\DiffAssembliesCommand.cs" />
+    <Compile Include="Scripting\Commands\DowndLoadPdbsCommand.cs" />
+    <Compile Include="Scripting\Commands\IComandLineAction.cs" />
+    <Compile Include="Scripting\Commands\WhoImplementsInterfaceCommand.cs" />
+    <Compile Include="Scripting\Commands\WhoReferencesCommand.cs" />
+    <Compile Include="Scripting\Commands\WhoUsesEventCommand.cs" />
+    <Compile Include="Scripting\Commands\WhoUsesFieldCommand.cs" />
+    <Compile Include="Scripting\Commands\WhoUsesMethodCommand.cs" />
+    <Compile Include="Scripting\Commands\WhoUsesStringConstantCommand.cs" />
+    <Compile Include="Scripting\Commands\WhoUsesTypeCommand.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
