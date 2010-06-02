@@ -1,4 +1,4 @@
-﻿
+﻿// This code is inspired from the Gallio project and modified a bit to suit our needs better.
 
 // Copyright 2005-2010 Gallio Project - http://www.gallio.org/
 // Portions Copyright 2000-2004 Jonathan de Halleux

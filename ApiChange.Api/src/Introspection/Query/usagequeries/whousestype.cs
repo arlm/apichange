@@ -172,7 +172,10 @@ namespace ApiChange.Api.Introspection
                     }
                     else
                     {
-                        Debug.Assert(false, "Method could should resolve either to generic method or member reference.");
+                        // be robust. The type System.Web.Util.CalliHelper for example has strange opcodes inside it:
+                        // .method assembly static void ArglessFunctionCaller(native int fp, object o) cil managed
+                        // calli method instance void *()
+                        continue;
                     }
 
                     if (methodDeclaringType != null)

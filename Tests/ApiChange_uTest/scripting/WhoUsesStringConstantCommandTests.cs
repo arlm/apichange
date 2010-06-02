@@ -31,13 +31,13 @@ namespace UnitTests.Scripting
             StringAssert.Contains("DependantLibV1.WhoUsesStringConstants.UsingStringConstants", output);
             StringAssert.Contains("private void CompareAgainstString(String input)", output);
             StringAssert.Contains("Global A string", output);
-            StringAssert.Contains("UsingStringConstants.cs; 31", output);
+            StringAssert.Contains("UsingStringConstants.cs; 19", output);
 
             StringAssert.Contains("private void CreateCompoundString(String str)", output);
-            StringAssert.Contains("; 39", output);
+            StringAssert.Contains("; 27", output);
 
             StringAssert.Contains("public void .ctor()", output);
-            StringAssert.Contains("; 27",output);
+            StringAssert.Contains("; 15",output);
 
             StringAssert.Contains("private const string ConstCompoundString", output);
         }

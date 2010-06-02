@@ -8,6 +8,7 @@ using System.Diagnostics;
 using Microsoft.Office.Interop.Excel;
 using System.Threading;
 using ApiChange.Infrastructure;
+using System.Globalization;
 
 namespace ApiChange.Api.Scripting
 {
@@ -44,14 +45,17 @@ namespace ApiChange.Api.Scripting
         {
             using (Tracer t = new Tracer(myType, "ExcelOutputWriter"))
             {
-                mybCloseOnDispose = ((options & ExcelOptions.CloseOnExit) == ExcelOptions.CloseOnExit);
-                myExcelFileName = outFileName;
-                myExcel.DisplayAlerts = false;
-                myExcel.Visible = ((options & ExcelOptions.Visible) == ExcelOptions.Visible);
-                myWorkbook = myExcel.Workbooks.Add(1);
-                t.Info("CloseOnDispose: {0}, OutFileName: {1}, Visible: {2}", mybCloseOnDispose, outFileName, myExcel.Visible);
+                using (new USCulture())
+                {
+                    mybCloseOnDispose = ((options & ExcelOptions.CloseOnExit) == ExcelOptions.CloseOnExit);
+                    myExcelFileName = outFileName;
+                    myExcel.DisplayAlerts = false;
+                    myExcel.Visible = ((options & ExcelOptions.Visible) == ExcelOptions.Visible);
+                    myWorkbook = myExcel.Workbooks.Add(1);
+                    t.Info("CloseOnDispose: {0}, OutFileName: {1}, Visible: {2}", mybCloseOnDispose, outFileName, myExcel.Visible);
 
-                myWriter = new AsyncWriter<List<string>>(WriteLine);
+                    myWriter = new AsyncWriter<List<string>>(WriteLine);
+                }
             }
         }
 
@@ -154,33 +158,36 @@ namespace ApiChange.Api.Scripting
         {
             using (Tracer t = new Tracer(myType, "SetCurrentSheet"))
             {
-                if (myCurrentSheet != null)
-                {
-                    t.Info("Wait until previous sheet data has been written");
-                    myWriter.Close();
-                    t.Info("Wait finished");
-                    myWriter = new AsyncWriter<List<string>>(this.WriteLine);
-                }
-
-                lock (this)
+                using (new USCulture())
                 {
                     if (myCurrentSheet != null)
                     {
-                        EnableAutoFilter();
+                        t.Info("Wait until previous sheet data has been written");
+                        myWriter.Close();
+                        t.Info("Wait finished");
+                        myWriter = new AsyncWriter<List<string>>(this.WriteLine);
                     }
-                    myCurrentSheetInfo = header;
-                    myCurrentSheet = AddSheet(header.SheetName);
-                    myRowIndex = 1;
 
-                    for (int i = 0; i < header.Columns.Count; i++)
+                    lock (this)
                     {
-                        var colum = header.Columns[i];
-                        Range r = GetCell(myCurrentSheet, i, header.HeaderRow);
-                        r.Value2 = colum.Name;
-                        r.ColumnWidth = colum.Width;
-                    }
+                        if (myCurrentSheet != null)
+                        {
+                            EnableAutoFilter();
+                        }
+                        myCurrentSheetInfo = header;
+                        myCurrentSheet = AddSheet(header.SheetName);
+                        myRowIndex = 1;
 
-                    SetHeaderFont(header);
+                        for (int i = 0; i < header.Columns.Count; i++)
+                        {
+                            var colum = header.Columns[i];
+                            Range r = GetCell(myCurrentSheet, i, header.HeaderRow);
+                            r.Value2 = colum.Name;
+                            r.ColumnWidth = colum.Width;
+                        }
+
+                        SetHeaderFont(header);
+                    }
                 }
             }
         }
@@ -194,9 +201,12 @@ namespace ApiChange.Api.Scripting
         {
             using (Tracer t = new Tracer(myType, "AddSheet"))
             {
-                Worksheet sheet = (Worksheet)myWorkbook.Worksheets.Add(Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                sheet.Name = sheetName;
-                return sheet;
+                using(new USCulture())
+                {
+                    Worksheet sheet = (Worksheet)myWorkbook.Worksheets.Add(Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                    sheet.Name = sheetName;
+                    return sheet;
+                }
             }
         }
 
@@ -204,27 +214,39 @@ namespace ApiChange.Api.Scripting
         {
             if( myCurrentSheet != null )
             {
-                ((_Workbook)myWorkbook).Activate();
-                Range header = GetRange(myCurrentSheet, 0, myCurrentSheetInfo.HeaderRow, myCurrentSheetInfo.Columns.Count-1, myCurrentSheetInfo.HeaderRow+myRowIndex);
-                // it is important to fill for the unkown things Type.Missing to excel otherwise all rows are
-                // hidden!
-                header.AutoFilter(1, Type.Missing, XlAutoFilterOperator.xlAnd, Type.Missing, true);
+                using (new USCulture())
+                {
+                    ((_Workbook)myWorkbook).Activate();
+                    Range header = GetRange(myCurrentSheet, 0, myCurrentSheetInfo.HeaderRow, myCurrentSheetInfo.Columns.Count - 1, myCurrentSheetInfo.HeaderRow + myRowIndex);
+                    // it is important to fill for the unkown things Type.Missing to excel otherwise all rows are
+                    // hidden!
+                    header.AutoFilter(1, Type.Missing, XlAutoFilterOperator.xlAnd, Type.Missing, true);
+                }
             }
         }
 
         public Range GetCell(Worksheet sheet, string cell)
         {
-            return sheet.get_Range(cell, Type.Missing);
+            using (new USCulture())
+            {
+                return sheet.get_Range(cell, Type.Missing);
+            }
         }
 
         public Range GetCell(Worksheet sheet, int x, int y)
         {
-            return GetCell(sheet, myColIdx[x].ToString() + y.ToString());
+            using (new USCulture())
+            {
+                return GetCell(sheet, myColIdx[x].ToString() + y.ToString());
+            }
         }
 
         public Range GetRange(Worksheet sheet, int x1, int y1, int x2, int y2)
         {
-            return sheet.get_Range(myColIdx[x1].ToString() + y1.ToString(), myColIdx[x2].ToString() + y2.ToString());
+            using (new USCulture())
+            {
+                return sheet.get_Range(myColIdx[x1].ToString() + y1.ToString(), myColIdx[x2].ToString() + y2.ToString());
+            }
         }
 
         protected void SetHeaderFont(SheetInfo header)
@@ -239,10 +261,13 @@ namespace ApiChange.Api.Scripting
 
         public void Dispose()
         {
-            Dispose(true);
+            using (new USCulture())
+            {
+                Dispose(true);
+            }
         }
 
-        public virtual void Dispose(bool isDisposing)
+        protected virtual void Dispose(bool isDisposing)
         {
             if (myExcel != null)
             {
@@ -267,8 +292,11 @@ namespace ApiChange.Api.Scripting
         {
             if (myWorkbook != null && !String.IsNullOrEmpty(myExcelFileName))
             {
-                DeleteOldExcelFile();
-                this.myWorkbook.SaveAs(myExcelFileName, XlFileFormat.xlWorkbookNormal, "", "", false, false, XlSaveAsAccessMode.xlExclusive, XlSaveConflictResolution.xlLocalSessionChanges, false, 0, 0, 0);
+                using (new USCulture())
+                {
+                    DeleteOldExcelFile();
+                    this.myWorkbook.SaveAs(myExcelFileName, XlFileFormat.xlWorkbookNormal, "", "", false, false, XlSaveAsAccessMode.xlExclusive, XlSaveConflictResolution.xlLocalSessionChanges, false, 0, 0, 0);
+                }
             }
         }
 
@@ -292,4 +320,29 @@ namespace ApiChange.Api.Scripting
         }
 
     }
+
+    /// <summary>
+    /// Prevent Excel automation problems when the COM object is called from
+    /// non en-us threads.
+    /// http://support.microsoft.com/?scid=kb%3Ben-us%3B320369&x=18&y=7
+    /// </summary>
+    class USCulture : IDisposable
+    {
+        CultureInfo myThreadCulture;
+        public USCulture()
+        {
+            myThreadCulture = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-us");
+        }
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            Thread.CurrentThread.CurrentCulture = myThreadCulture;
+        }
+
+        #endregion
+    }
+
 }

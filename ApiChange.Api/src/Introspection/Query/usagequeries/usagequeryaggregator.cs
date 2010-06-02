@@ -79,11 +79,6 @@ namespace ApiChange.Api.Introspection
         /// <param name="symbolServer">To get file and line info the pdbs are read. If the pdb does not match it contacts the symbol server to look for matching pdb and downloads it.</param>
         public UsageQueryAggregator(string symbolServer):this(true)
         {
-            if (symbolServer == null)
-            {
-                throw new ArgumentNullException("symbolServer");
-            }
-
             if (myPdbReader != null)
             {
                 myPdbReader.Dispose();

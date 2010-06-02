@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using ApiChange.Api.Introspection;
 using ApiChange.Infrastructure;
+using ApiChange.ExternalData;
 
 namespace ApiChange.Api.Scripting
 {
@@ -86,7 +87,7 @@ namespace ApiChange.Api.Scripting
             int total = 0;
             foreach (FileQuery query in myParsedArgs.Queries1)
             {
-                myloader.DownloadPdbs(query, myParsedArgs.SymbolServer, myParsedArgs.PdbDownloadDir);
+                myloader.DownloadPdbs(query, myParsedArgs.SymbolServer ?? SiteConstants.DefaultSymbolServer, myParsedArgs.PdbDownloadDir);
                 total += query.Files.Length;
             }
 

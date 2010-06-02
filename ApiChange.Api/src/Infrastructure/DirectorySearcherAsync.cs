@@ -63,6 +63,8 @@ namespace ApiChange.Infrastructure
             }
 
             mySearchPath = Path.GetFullPath(searchPath);
+            Tracer.Info(Level.L1, myType, "DirectorySearcherAsync", "Search in path {0} for {1}", mySearchPath, searchPattern);
+
             mySearchPattern = searchPattern;
             mySearchOption = searchOption;
         }

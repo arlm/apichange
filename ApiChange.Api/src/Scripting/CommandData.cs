@@ -133,7 +133,12 @@ namespace ApiChange.Api.Scripting
             set;
         }
 
-        internal static string mySymbolServer = Environment.GetEnvironmentVariable("SYMSERVER") ?? SiteConstants.DefaultSymbolServer;
+        string mySymbolServer = Environment.GetEnvironmentVariable("SYMSERVER");
+
+        /// <summary>
+        /// For every match when the pdb is not found the UsageQueryAggregator tries to 
+        /// download the pdb from the symbol server with symchk.
+        /// </summary>
         public string SymbolServer
         {
             get { return mySymbolServer;  }

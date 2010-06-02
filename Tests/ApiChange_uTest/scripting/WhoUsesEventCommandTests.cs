@@ -46,9 +46,9 @@ namespace UnitTests.Scripting
             StringAssert.Contains("RegisterToPublicEvent", output);
             StringAssert.Contains("AddEvent",output);
             StringAssert.Contains("RemoveEvent", output);
-            StringAssert.Contains("ClassWhichUsesMethods.cs; 60", output);
-            StringAssert.Contains("ClassWhichUsesMethods.cs; 65", output);
-            StringAssert.Contains("ClassWhichUsesMethods.cs; 70", output);
+            StringAssert.Contains("ClassWhichUsesMethods.cs; 48", output);
+            StringAssert.Contains("ClassWhichUsesMethods.cs; 53", output);
+            StringAssert.Contains("ClassWhichUsesMethods.cs; 58", output);
 
         }
 

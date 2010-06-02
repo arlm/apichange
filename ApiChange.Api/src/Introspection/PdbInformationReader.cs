@@ -81,14 +81,17 @@ namespace ApiChange.Api.Introspection
                                 t.Error(Level.L2, delex, "Could not delete pdb {0}", pdbFileName);
                             }
 
-                            bool bDownloaded = false;
-                            if (mySymbolServer != null)
+                            // When we have symbol server we try to make us of it for matches.
+                            if (String.IsNullOrEmpty(mySymbolServer))
                             {
-                                t.Info("Try to download pdb from symbol server {0}", mySymbolServer);
-                                bDownloaded = myDownLoader.DownloadPdbs(new FileQuery(fileName),
-                                                                        mySymbolServer);
-                                t.Info("Did download pdb {0} from symbol server with return code: {1}", fileName, bDownloaded);
+                                break;
                             }
+
+                            t.Info("Try to download pdb from symbol server {0}", mySymbolServer);
+                            bool bDownloaded = myDownLoader.DownloadPdbs(new FileQuery(fileName),
+                                                                    mySymbolServer);
+                            t.Info("Did download pdb {0} from symbol server with return code: {1}", fileName, bDownloaded);
+
 
                             if (bDownloaded == false || i == 1) // second try did not work out as well
                             {

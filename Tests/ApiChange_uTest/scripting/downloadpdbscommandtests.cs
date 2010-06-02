@@ -35,6 +35,7 @@ namespace UnitTests.Scripting
         public void FailedPdbCount_Is_One_When_Pdb_Could_Not_Be_Found()
         {
             CommandData data = new CommandData();
+            data.SymbolServer = "";
             data.Queries1.Add(new FileQuery(@"%windir%\system32\kernel32.dll"));
             DowndLoadPdbsCommand cmd = new DowndLoadPdbsCommand(data);
             cmd.Out = new StringWriter();

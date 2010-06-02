@@ -40,9 +40,9 @@ namespace UnitTests.Scripting
             WhoUsesFieldCommand cmd = (WhoUsesFieldCommand)data.GetCommand();
             cmd.Out = new StringWriter();
             cmd.Execute();
-            StringAssert.Contains("ClassWhichAccessesFields.cs; 37", cmd.Out.ToString());
-            StringAssert.Contains("ClassWhichAccessesFields.cs; 38", cmd.Out.ToString());
-            StringAssert.Contains("ClassWhichAccessesFields.cs; 39", cmd.Out.ToString());
+            StringAssert.Contains("ClassWhichAccessesFields.cs; 25", cmd.Out.ToString());
+            StringAssert.Contains("ClassWhichAccessesFields.cs; 26", cmd.Out.ToString());
+            StringAssert.Contains("ClassWhichAccessesFields.cs; 27", cmd.Out.ToString());
         }
     }
 }
