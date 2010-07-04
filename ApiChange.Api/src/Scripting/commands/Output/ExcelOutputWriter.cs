@@ -14,7 +14,7 @@ namespace ApiChange.Api.Scripting
 {
     class ExcelOutputWriter : IOutputWriter
     {
-        static TypeHandle myType = new TypeHandle(typeof(ExcelOutputWriter));
+        static TypeHashes myType = new TypeHashes(typeof(ExcelOutputWriter));
 
         internal const string myColIdx = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         internal protected ApplicationClass myExcel = new ApplicationClass();

@@ -14,7 +14,7 @@ namespace ApiChange.Api.Introspection
 {
     public class UsageQueryAggregator : IDisposable
     {
-        static TypeHandle myType = new TypeHandle(typeof(UsageQueryAggregator));
+        static TypeHashes myType = new TypeHashes(typeof(UsageQueryAggregator));
 
         private TypeQuery myTypeQuery;
         protected PdbInformationReader myPdbReader;

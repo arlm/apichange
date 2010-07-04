@@ -10,7 +10,7 @@ namespace ApiChange.Infrastructure
     /// Create a static instance of each class where you want to use tracing. 
     /// It does basically encapsulate the typename and enables fast trace filters.
     /// </summary>
-    public class TypeHandle
+    public class TypeHashes
     {
         string myFullTypeName;
         internal int[] myTypeHashes;
@@ -27,7 +27,7 @@ namespace ApiChange.Infrastructure
         /// Initializes a new instance of the <see cref="TypeHandle"/> class.
         /// </summary>
         /// <param name="typeName">Name of the type.</param>
-        public TypeHandle(string typeName)
+        public TypeHashes(string typeName)
         {
             if (String.IsNullOrEmpty(typeName))
             {
@@ -54,7 +54,7 @@ namespace ApiChange.Infrastructure
         /// Create a TypeHandle which is used by the Tracer class.
         /// </summary>
         /// <param name="t">Type of your enclosing class.</param>
-        public TypeHandle(Type t) : this(CheckInput(t))
+        public TypeHashes(Type t) : this(CheckInput(t))
         {
         }
 

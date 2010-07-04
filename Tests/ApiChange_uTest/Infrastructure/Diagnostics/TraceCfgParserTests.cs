@@ -11,12 +11,12 @@ namespace UnitTests.Infrastructure.Diagnostics
     [TestFixture]
     public class TraceCfgParserTests
     {
-        public static TypeHandle ApiChange = new TypeHandle("ApiChange");
-        public static TypeHandle ApiChange_Infrastructure = new TypeHandle("ApiChange.Infrastructure");
-        public static TypeHandle ApiChange_Infrastructure_Internal = new TypeHandle("ApiChange.Infrastructure.Internal");
-        public static TypeHandle ApiChange1 = new TypeHandle("ApiChange1");
-        public static TypeHandle ApiChange_Infrastructure1 = new TypeHandle("ApiChange.Infrastructure1");
-        public static TypeHandle ApiChange_Infrastructure_Internal1 = new TypeHandle("ApiChange.Infrastructure.Internal1");
+        public static TypeHashes ApiChange = new TypeHashes("ApiChange");
+        public static TypeHashes ApiChange_Infrastructure = new TypeHashes("ApiChange.Infrastructure");
+        public static TypeHashes ApiChange_Infrastructure_Internal = new TypeHashes("ApiChange.Infrastructure.Internal");
+        public static TypeHashes ApiChange1 = new TypeHashes("ApiChange1");
+        public static TypeHashes ApiChange_Infrastructure1 = new TypeHashes("ApiChange.Infrastructure1");
+        public static TypeHashes ApiChange_Infrastructure_Internal1 = new TypeHashes("ApiChange.Infrastructure.Internal1");
 
         TraceReset myReset;
 

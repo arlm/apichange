@@ -12,7 +12,7 @@ namespace ApiChange.Infrastructure
         {
         }
 
-        public override bool IsMatch(TypeHandle type, MessageTypes msgTypeFilter, Level level)
+        public override bool IsMatch(TypeHashes type, MessageTypes msgTypeFilter, Level level)
         {
             return false;
         }

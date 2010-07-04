@@ -16,7 +16,7 @@ namespace ApiChange.Infrastructure
     /// <typeparam name="T">Workitem type</typeparam>
     public class WorkItemDispatcher<T> : IDisposable where T : class
     {
-        static TypeHandle myType = new TypeHandle(typeof(WorkItemDispatcher<T>));
+        static TypeHashes myType = new TypeHashes(typeof(WorkItemDispatcher<T>));
 
         WaitHandle[] myExitEvents;
         List<Exception> myExceptions = new List<Exception>();

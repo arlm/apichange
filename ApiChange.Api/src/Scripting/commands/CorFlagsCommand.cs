@@ -11,7 +11,7 @@ namespace ApiChange.Api.Scripting
 {
     class CorFlagsCommand : CommandBase
     {
-        static TypeHandle myType = new TypeHandle(typeof(CorFlagsCommand));
+        static TypeHashes myType = new TypeHashes(typeof(CorFlagsCommand));
 
         SheetInfo mySheetLayout = new SheetInfo
         {

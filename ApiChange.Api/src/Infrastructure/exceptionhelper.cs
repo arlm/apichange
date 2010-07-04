@@ -96,6 +96,26 @@ namespace ApiChange.Infrastructure
             }
         }
 
+        static LastException myExceptionGetter = new LastException();
+
+        /// <summary>
+        /// Return the current exception when the stack is unwound due to a 
+        /// thrown exception. This does work everywhere and not only in catch methods.
+        /// </summary>
+        public static Exception CurrentException
+        {
+            get
+            {
+                Exception lret = null;
+                if (InException)
+                {
+                    lret = myExceptionGetter.GetLastException();
+                }
+
+                return lret;
+            }
+        }
+
         /// <summary>
         /// Normally used in a finally block to execute code when an exception has occured.
         /// </summary>

@@ -12,7 +12,7 @@ namespace ApiChange.Api.Scripting
 {
     class DiffAssembliesCommand : CommandBase
     {
-        static TypeHandle myType = new TypeHandle(typeof(DiffAssembliesCommand));
+        static TypeHashes myType = new TypeHashes(typeof(DiffAssembliesCommand));
 
         #region ICommandeLineAction Members
 

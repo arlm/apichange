@@ -13,7 +13,7 @@ namespace ApiChange.Api.Introspection
 {
     public class PdbInformationReader : IDisposable
     {
-        static TypeHandle myType = new TypeHandle(typeof(PdbInformationReader));
+        static TypeHashes myType = new TypeHashes(typeof(PdbInformationReader));
         private PdbFactory myPdbFactory = new PdbFactory();
         Dictionary<string, ISymbolReader> myFile2PdbMap = new Dictionary<string, ISymbolReader>(StringComparer.OrdinalIgnoreCase);
         HashSet<string> myFailedPdbs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);

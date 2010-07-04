@@ -11,7 +11,7 @@ namespace ApiChange
 {
     internal class Program
     {
-        static TypeHandle myType = new TypeHandle(typeof(Program));
+        static TypeHashes myType = new TypeHashes(typeof(Program));
 
         private static void Main(string[] args)
         {

@@ -89,7 +89,9 @@
     <Compile Include="ExternalData\SiteConstants.cs" />
     <Compile Include="ExternalData\UserInfo.cs" />
     <Compile Include="Infrastructure\AggregateException.cs" />
+    <Compile Include="Infrastructure\Diagnostics\PtrConverter.cs" />
     <Compile Include="Infrastructure\Diagnostics\InternalError.cs" />
+    <Compile Include="Infrastructure\Diagnostics\LastException.cs" />
     <Compile Include="Infrastructure\Diagnostics\LazyFormat.cs" />
     <Compile Include="Infrastructure\Diagnostics\MessageTypes.cs" />
     <Compile Include="Infrastructure\Diagnostics\NullTraceListener.cs" />
@@ -106,7 +108,7 @@
     <Compile Include="Infrastructure\FileNameComparer.cs" />
     <Compile Include="Infrastructure\filequery.cs" />
     <Compile Include="Infrastructure\Diagnostics\Tracer.cs" />
-    <Compile Include="Infrastructure\Diagnostics\TypeHandle.cs" />
+    <Compile Include="Infrastructure\Diagnostics\TypeHashes.cs" />
     <Compile Include="Infrastructure\WorkItemDispatcher.cs" />
     <Compile Include="Infrastructure\WorkItemDispatcherData.cs" />
     <Compile Include="Infrastructure\WorkItemOptions.cs" />

@@ -14,7 +14,7 @@ namespace ApiChange.Api.Introspection
 {
     class SymChkExecutor : ISymChkExecutor
     {
-        static TypeHandle myType = new TypeHandle(typeof(SymChkExecutor));
+        static TypeHashes myType = new TypeHashes(typeof(SymChkExecutor));
 
         internal string SymChkExeName = "symchk.exe";
         internal static bool bCanStartSymChk = true;

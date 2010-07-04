@@ -13,7 +13,7 @@ namespace ApiChange.Infrastructure
 {
     public class DirectorySearcherAsync : IEnumerable<string>
     {
-        static TypeHandle myType = new TypeHandle(typeof(DirectorySearcherAsync));
+        static TypeHashes myType = new TypeHashes(typeof(DirectorySearcherAsync));
 
         string mySearchPath;
         string mySearchPattern;

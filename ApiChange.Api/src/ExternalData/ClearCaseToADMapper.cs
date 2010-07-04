@@ -11,7 +11,7 @@ namespace ApiChange.ExternalData
     public class ClearCaseToADMapper : IFileInformationProvider
     {
         #region IFileInformationProvider Members
-        static TypeHandle myType = new TypeHandle(typeof(ClearCaseToADMapper));
+        static TypeHashes myType = new TypeHashes(typeof(ClearCaseToADMapper));
         ApplicationClass myCCApp = new ApplicationClass();
         ADQuery myActiveDir = new ADQuery();
 

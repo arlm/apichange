@@ -28,7 +28,7 @@ namespace ApiChange.Api.Introspection
     public class WhoUsesType : UsageVisitor
     {
         static FieldQuery notConst = new FieldQuery("!const * *");
-        static TypeHandle myType = new TypeHandle(typeof(WhoUsesType));
+        static TypeHashes myType = new TypeHashes(typeof(WhoUsesType));
 
         HashSet<string> myArgSearchTypeNames = new HashSet<string>();
         List<TypeDefinition> mySearchArgTypes;

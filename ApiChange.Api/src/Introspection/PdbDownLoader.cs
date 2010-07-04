@@ -11,7 +11,7 @@ namespace ApiChange.Api.Introspection
 {
     class PdbDownLoader
     {
-        static TypeHandle myType = new TypeHandle(typeof(PdbDownLoader));
+        static TypeHashes myType = new TypeHashes(typeof(PdbDownLoader));
 
         int myDownLoadThreadCount;
 

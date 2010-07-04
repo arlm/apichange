@@ -13,7 +13,7 @@ namespace ApiChange.Api.Introspection
 {
     public class AssemblyLoader
     {
-        static TypeHandle myType = new TypeHandle(typeof(AssemblyLoader));
+        static TypeHashes myType = new TypeHashes(typeof(AssemblyLoader));
 
         static bool IsManagedCppAssembly(AssemblyDefinition assembly)
         {

@@ -9,7 +9,7 @@ namespace ApiChange.Api.Scripting
 {
     public class CommandParser
     {
-        static TypeHandle myType = new TypeHandle(typeof(CommandParser));
+        static TypeHashes myType = new TypeHashes(typeof(CommandParser));
 
         string[] myArgs;
         int myParseIdx;

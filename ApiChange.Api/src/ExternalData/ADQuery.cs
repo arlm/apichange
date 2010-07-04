@@ -10,7 +10,7 @@ namespace ApiChange.ExternalData
 {
     public class ADQuery
     {
-        static TypeHandle myType = new TypeHandle(typeof(ADQuery));
+        static TypeHashes myType = new TypeHashes(typeof(ADQuery));
 
         // Fields
         private static Dictionary<string, UserInfo> myADCache = new Dictionary<string, UserInfo>();

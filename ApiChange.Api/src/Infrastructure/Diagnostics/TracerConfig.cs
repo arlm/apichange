@@ -72,7 +72,7 @@ namespace ApiChange.Infrastructure
         }
 
 
-        internal bool IsEnabled(TypeHandle type, MessageTypes msgType, Level level)
+        internal bool IsEnabled(TypeHashes type, MessageTypes msgType, Level level)
         {
             if( myListeners == null || type == null)
             {

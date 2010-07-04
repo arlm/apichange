@@ -13,7 +13,7 @@ namespace ApiChange.Api.Introspection
 {
     public class WhoUsesMethod : UsageVisitor
     {
-        static TypeHandle myType = new TypeHandle(typeof(WhoUsesMethod));
+        static TypeHashes myType = new TypeHashes(typeof(WhoUsesMethod));
         const MethodPrintOption myMethodFormat = MethodPrintOption.ReturnType | MethodPrintOption.ShortNames | MethodPrintOption.Parameters;
 
         // Do fast compares with Hashsets instead of string comparisons

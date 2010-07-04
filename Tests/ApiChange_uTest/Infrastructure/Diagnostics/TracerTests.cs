@@ -14,7 +14,7 @@ namespace UnitTests.Infrastructure.Diagnostics
     public class TracerTests
     {
         SetReset<string> myReset;
-        static TypeHandle myType = new TypeHandle(typeof(TracerTests));
+        static TypeHashes myType = new TypeHashes(typeof(TracerTests));
 
         [SetUp]
         public void SaveTraceSettings()
@@ -163,6 +163,53 @@ namespace UnitTests.Infrastructure.Diagnostics
             {
                 ExceptionHelper.WhenException(() => stringTracer.Messages.ForEach((str) => Console.Write(str)));
             }
+        }
+
+        [Test]
+        public void Every_Thread_Prints_His_Exception_Only_Once()
+        {
+            TracerConfig.Reset("null");
+            StringListTraceListener stringTracer = new StringListTraceListener();
+            TracerConfig.Listeners.Add(stringTracer);
+            ThreadStart method = () =>
+                {
+                    try
+                    {
+                        using(Tracer tr1 = new Tracer(myType, "Enclosing Method"))
+                        {
+                            using (Tracer tracer = new Tracer(myType, "Thread Method"))
+                            {
+                                throw new NotImplementedException(Thread.CurrentThread.Name);
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    { }
+                };
+
+            List<Thread> threads = new List<Thread>();
+            const int ThreadCount = 3;
+            List<string> threadNames = new List<string>();
+            for(int i=0;i<ThreadCount;i++)
+            {
+                Thread t = new Thread(method);
+                string threadName = "Tracer Thread " + i;
+                t.Name = threadName;
+                threadNames.Add(threadName);
+                t.Start();
+                threads.Add(t);
+            }
+
+            threads.ForEach(t => t.Join());
+
+            var exLines = stringTracer.GetMessages(line => line.Contains("Exception"));
+            Assert.AreEqual(ThreadCount, exLines.Count);
+            for(int i=0;i<threadNames.Count;i++)
+            {
+                Assert.IsTrue(exLines.Any( traceLine => traceLine.Contains(threadNames[i])), 
+                    String.Format("Thread with name {0} not found in output", exLines[i]));
+            }
+            Assert.AreEqual(ThreadCount * 5, stringTracer.Messages.Count);
         }
     }
 }

@@ -47,7 +47,7 @@ namespace ApiChange.Infrastructure
             }
         }
         
-        public virtual bool IsMatch(TypeHandle type, MessageTypes msgTypeFilter, Level level)
+        public virtual bool IsMatch(TypeHashes type, MessageTypes msgTypeFilter, Level level)
         {
             bool lret = ((level & myLevelFilter) != Level.None);
 

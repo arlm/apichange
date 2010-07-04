@@ -17,7 +17,7 @@ namespace ApiChange.Infrastructure
     public struct Tracer : IDisposable
     {
         string myMethod;
-        TypeHandle myType;
+        TypeHashes myType;
         string myTypeMethodName;
         string TypeMethodName
         {
@@ -32,11 +32,13 @@ namespace ApiChange.Infrastructure
             }
         }
 
-        bool myHasExceptionOnStack;
         DateTime myEnterTime;
         Level myLevel;
 
-        static string GenerateTypeMethodName(TypeHandle type, string method)
+        [ThreadStatic]
+        static Exception myLastPrintedException;
+
+        static string GenerateTypeMethodName(TypeHashes type, string method)
         {
             return type.FullQualifiedTypeName + "." + method;
         }
@@ -53,7 +55,7 @@ namespace ApiChange.Infrastructure
         /// </summary>
         /// <param name="type">TypeHandle instance which identifies your class type. This instance should be a static instance of your type.</param>
         /// <param name="method">The method name of your current method.</param>
-        public Tracer(TypeHandle type, string method):this(Level.L1, type, method)
+        public Tracer(TypeHashes type, string method):this(Level.L1, type, method)
         {
         }
 
@@ -63,7 +65,7 @@ namespace ApiChange.Infrastructure
         /// <param name="level">Trace Level. 1 is the high level overview, 5 is for high volume detailed traces.</param>
         /// <param name="type">TypeHandle instance which identifies your class type. This instance should be a static instance of your type.</param>
         /// <param name="method">The method name of your current method.</param>
-        public Tracer(Level level, TypeHandle type, string method)
+        public Tracer(Level level, TypeHashes type, string method)
         {
             if (type == null)
             {
@@ -79,12 +81,10 @@ namespace ApiChange.Infrastructure
             myType = type;
             myLevel = level;
             myTypeMethodName = null;
-            myHasExceptionOnStack = false;
 
             if (TracerConfig.Instance.IsEnabled(myType, MessageTypes.InOut, myLevel))
             {
                 myEnterTime = DateTime.Now;
-                myHasExceptionOnStack = ExceptionHelper.InException;
                 TraceMsg(MsgTypeIn, this.TypeMethodName, myEnterTime, null, null);
             }
         }
@@ -146,7 +146,7 @@ namespace ApiChange.Infrastructure
         /// <param name="type">TypeHandle of your class.</param>
         /// <param name="action">The delegate to execute when it does match.</param>
         /// <returns>true when the delegate was executed, false otherwise.</returns>
-        public static bool Execute(MessageTypes msgType, Level level, TypeHandle type, Action action)
+        public static bool Execute(MessageTypes msgType, Level level, TypeHashes type, Action action)
         {
             if (TracerConfig.Instance.IsEnabled(type, msgType, level))
             {
@@ -195,7 +195,7 @@ namespace ApiChange.Infrastructure
         /// <param name="method">The method name of your current method.</param>
         /// <param name="fmt">Trace message format string</param>
         /// <param name="args">Optional message format arguments.</param>
-        public static void Info(Level level, TypeHandle type, string method, string fmt, params object [] args)
+        public static void Info(Level level, TypeHashes type, string method, string fmt, params object [] args)
         {
             if (fmt == null)
             {
@@ -251,7 +251,7 @@ namespace ApiChange.Infrastructure
         /// <param name="method">The method name of your current method.</param>
         /// <param name="fmt">Trace message format string</param>
         /// <param name="args">Optional message format arguments.</param>
-        public static void Warning(Level level, TypeHandle type, string method, string fmt, params object[] args)
+        public static void Warning(Level level, TypeHashes type, string method, string fmt, params object[] args)
         {
             if (fmt == null)
             {
@@ -304,7 +304,7 @@ namespace ApiChange.Infrastructure
         /// <param name="method">The method name of your current method.</param>
         /// <param name="fmt">Trace message format string</param>
         /// <param name="args">Optional message format arguments.</param>
-        public static void Error(Level level, TypeHandle type, string method, string fmt, params object[] args)
+        public static void Error(Level level, TypeHashes type, string method, string fmt, params object[] args)
         {
             if (fmt == null)
             {
@@ -355,7 +355,7 @@ namespace ApiChange.Infrastructure
         /// <param name="type">TypeHandle instance which identifies your class type. This instance should be a static instance of your type.</param>
         /// <param name="method">The method name of your current method.</param>
         /// <param name="ex">The excepton to trace.</param>
-        public static void Error(Level level, TypeHandle type, string method, Exception ex)
+        public static void Error(Level level, TypeHashes type, string method, Exception ex)
         {
             if (ex == null)
                 throw new ArgumentNullException("ex");
@@ -407,7 +407,7 @@ namespace ApiChange.Infrastructure
         /// <param name="ex">The exception to trace.</param>
         /// <param name="fmt">Message describing what the exception is about.</param>
         /// <param name="args">Optional format arguments for the description message string.</param>
-        public static void Error(Level level, TypeHandle type, string method, Exception ex, string fmt, params object[] args)
+        public static void Error(Level level, TypeHashes type, string method, Exception ex, string fmt, params object[] args)
         {
             if (ex == null)
                 throw new ArgumentNullException("ex");
@@ -426,6 +426,10 @@ namespace ApiChange.Infrastructure
         /// <summary>
         /// Generate a leaving method trace. Normally called at the end of an using statement.
         /// </summary>
+        /// <remarks>
+        /// When the method is left with an exception a second leaving statement with the exception is
+        /// traced. This is done for every exception only once. 
+        /// </remarks>
         public void Dispose()
         {
             if (TracerConfig.Instance.IsEnabled(myType, MessageTypes.InOut, myLevel))
@@ -435,14 +439,13 @@ namespace ApiChange.Infrastructure
                 // only print exception warning when we did not have an exception on the thread stack
                 // when we did enter this method. Otherwise we would print a warning while we entered and left a method while
                 // executing a catch handler altough in our called methods nothing has happened.
-                if (ExceptionHelper.InException && !myHasExceptionOnStack)
+                Exception currentException = ExceptionHelper.CurrentException;
+                if( currentException != null && Object.ReferenceEquals(myLastPrintedException,currentException) == false )
                 {
-                    TraceMsg(MsgTypeOut, this.TypeMethodName, now, "##Exception occured: {0:X}## Duration {1}", Marshal.GetExceptionCode(), FormatDuration(now.Ticks-myEnterTime.Ticks));
+                    myLastPrintedException = currentException;
+                    TraceMsg(MsgTypeOut, this.TypeMethodName, now, "Exception thrown: {0}", currentException);
                 }
-                else
-                {
-                    TraceMsg(MsgTypeOut, this.TypeMethodName,now, "Duration {0}", FormatDuration(now.Ticks-myEnterTime.Ticks));
-                }
+                TraceMsg(MsgTypeOut, this.TypeMethodName,now, "Duration {0}", FormatDuration(now.Ticks-myEnterTime.Ticks));
             }
         }
 

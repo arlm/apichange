@@ -7,13 +7,14 @@ using NUnit.Framework;
 using UnitTests;
 using ApiChange.Infrastructure;
 using System.Threading;
+using System.Globalization;
 
 namespace ApiChange.IntegrationTests.Diagnostics
 {
     [TestFixture]
     public class TracingTests
     {
-        static TypeHandle myType = new TypeHandle(typeof(TracingTests));
+        static TypeHashes myType = new TypeHashes(typeof(TracingTests));
 
         TraceReset myReset;
 
@@ -21,6 +22,7 @@ namespace ApiChange.IntegrationTests.Diagnostics
         public void SaveTrace()
         {
             myReset = new TraceReset(null);
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
         }
 
         [TearDown]
@@ -131,6 +133,36 @@ namespace ApiChange.IntegrationTests.Diagnostics
             }
 
             Assert.AreEqual(Threads, threadIds.Count);
+        }
+
+        [Test]
+        [ExpectedException(typeof(NotImplementedException))]
+        public void Demo_Show_Leaving_Trace_Wiht_Exception()
+        {
+            TracerConfig.Reset("console");
+            
+            SomeMethod();
+        }
+
+        void SomeMethod()
+        {
+            using (Tracer t = new Tracer(myType, "SomeMethod"))
+            {
+                SomeOtherMethod();
+            }
+        }
+
+        private void SomeOtherMethod()
+        {
+            using (Tracer t = new Tracer(myType, "SomeOtherMethod"))
+            {
+                FaultyMethod();
+            }
+        }
+
+        private void FaultyMethod()
+        {
+            throw new NotImplementedException("Hi this a fault");
         }
     }
 }
