@@ -80,6 +80,31 @@ namespace ApiChange.IntegrationTests.Diagnostics
         }
 
         [Test]
+        public void Performance_Tracing_To_Null_Device_Not_Matching()
+        {
+            TracerConfig.Reset("null; xxx *");
+            Action acc = GenerateTraces;
+            acc.Profile(500 * 1000, "Could trace {0} with {frequency} traces/s in {time}s");
+        }
+
+
+        [Test]
+        public void Performance_Tracing_To_File()
+        {
+            TracerConfig.Reset( @"file c:\temp\trace_uTest.txt; * *");
+            Action acc = GenerateTraces;
+            acc.Profile(50 * 1000, "Could trace {0} with {frequency} traces/s in {time}s");
+        }
+
+        [Test]
+        public void Performance_Tracing_To_DebugOutput()
+        {
+            TracerConfig.Reset(@"DebugOutput; * *");
+            Action acc = GenerateTraces;
+            acc.Profile(50 * 1000, "Could trace {0} with {frequency} traces/s in {time}s");
+        }
+
+        [Test]
         public void Performance_Static_Traces_To_Null_Device()
         {
             TracerConfig.Reset("null; * *");
@@ -163,6 +188,18 @@ namespace ApiChange.IntegrationTests.Diagnostics
         private void FaultyMethod()
         {
             throw new NotImplementedException("Hi this a fault");
+        }
+
+        [Test]
+        public void Demo_Alternate_Flow()
+        {
+            using(Tracer t = new Tracer(myType, "Demo_Alternate_Flow"))
+            {
+                t.InfoExecute(()=>
+                    {
+                        Console.WriteLine("Execute code only when info level is enabled");
+                    });
+            }
         }
     }
 }

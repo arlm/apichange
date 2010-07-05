@@ -42,28 +42,39 @@ namespace ApiChange.Infrastructure
                         myThreadOffset = 0x188;
                         break;
                     case ClrContext.Is64Bit|ClrContext.IsNet2:
-                        myThreadOffset = -1; // Todo find out offset for .NET 4 on 64 bit
+                        myThreadOffset = 0x240;
                         break;
                     case ClrContext.Is64Bit|ClrContext.IsNet4:
-                        myThreadOffset = -1; // Todo find out offset for .NET 2 on 64 bit
+                        myThreadOffset = 0x250;
+                        break;
+
+                    default: // ups who did install .NET 5?
+                        myThreadOffset = -1;
                         break;
                 }
             }
         }
 
+        /// <summary>
+        /// Get from the current thread the last thrown exception object.
+        /// </summary>
+        /// <returns>null when none exists or the exception instance.</returns>
         public Exception GetLastException()
         {
             Exception lret = null;
             if (myThreadPointerFieldInfo != null)
             {
                 IntPtr pInternalThread = (IntPtr)myThreadPointerFieldInfo.GetValue(Thread.CurrentThread);
-                IntPtr ppEx = Marshal.ReadIntPtr(pInternalThread, myThreadOffset);
-                if (ppEx != IntPtr.Zero)
+                if (pInternalThread != IntPtr.Zero && myThreadOffset != -1)
                 {
-                    IntPtr pEx = Marshal.ReadIntPtr(ppEx);
-                    if( pEx != IntPtr.Zero )
+                    IntPtr ppEx = Marshal.ReadIntPtr(pInternalThread, myThreadOffset);
+                    if (ppEx != IntPtr.Zero)
                     {
-                        lret = myConverter.ConvertFromIntPtr(pEx);
+                        IntPtr pEx = Marshal.ReadIntPtr(ppEx);
+                        if (pEx != IntPtr.Zero)
+                        {
+                            lret = myConverter.ConvertFromIntPtr(pEx);
+                        }
                     }
                 }
             }
