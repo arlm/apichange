@@ -28,6 +28,8 @@ namespace ApiChange.Infrastructure
              {"w", MessageTypes.Warning},
              {"error", MessageTypes.Error},
              {"e", MessageTypes.Error},
+             {"exception", MessageTypes.Exception},
+             {"ex", MessageTypes.Exception},
              {"all", MessageTypes.All },
              {"*", MessageTypes.All }
         };

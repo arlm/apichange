@@ -23,13 +23,16 @@ namespace ApiChange.Infrastructure
                                       "    <Message Filter> Enable a specific trace level and/or severity filter" + Environment.NewLine +
                                       "                     Several filters can be combined with the + sign." + Environment.NewLine +
                                       "                     Allowed trace Levels are: Level*, Level1, Level2, ... Level5, LevelDispose. Shortcuts are l*, l1, ... l5, ldispose."  + Environment.NewLine + 
-                                      "                     Severity Filters are:  All, InOut, Info, I, Information, Warning, Warn, W, Error, E" + Environment.NewLine +
+                                      "                     Severity Filters are:  All, InOut, Info, I, Information, Warning, Warn, W, Error, E, Exception, Ex" + Environment.NewLine +
                                       "                     Example: Level1+InOut+Info" + Environment.NewLine +
                                       "                     When no severity and or trace level is specified all levels/severities are enabled." + Environment.NewLine +
                                       " Enable full tracing (all severities and all levels) to debugoutput for all types except the ones which reside in the ApiChange.Infrastructure namespace" + Environment.NewLine + 
                                       "    " + TracerConfig.TraceEnvVarName + "=debugoutput; ApiChange.* all;!ApiChange.Infrastructure.* all" + Environment.NewLine +
                                       " Enable file traces with Level1 for all types except the ones beneath the ApiChange.Infrastructure namespace" + Environment.NewLine + 
-                                      "    " + TracerConfig.TraceEnvVarName + "=file; * Level1;!ApiChange.Infrastructure.* all";
+                                      "    " + TracerConfig.TraceEnvVarName + "=file; * Level1;!ApiChange.Infrastructure.* all" + Environment.NewLine + 
+                                      " Trace all exceptions in the method where it is first encountered"  + Environment.NewLine + 
+                                      "    " + TracerConfig.TraceEnvVarName + "=file c:\\temp\\exceptions.txt; * Exception";
+                                         
 
 
         static DefaultTraceListener myOutDevice = new DefaultTraceListener();

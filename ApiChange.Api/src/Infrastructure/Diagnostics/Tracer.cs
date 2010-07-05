@@ -43,11 +43,12 @@ namespace ApiChange.Infrastructure
             return type.FullQualifiedTypeName + "." + method;
         }
 
-        const string MsgTypeInfo    = "<Information>";
-        const string MsgTypeWarning = "<Warning    >";
-        const string MsgTypeError   = "<Error      >";
-        const string MsgTypeIn      = "<{{         >";
-        const string MsgTypeOut     = "<         }}<";
+        const string MsgTypeInfo      = "<Information>";
+        const string MsgTypeWarning   = "<Warning    >";
+        const string MsgTypeError     = "<Error      >";
+        const string MsgTypeException = "<Exception  >";
+        const string MsgTypeIn        = "<{{         >";
+        const string MsgTypeOut       = "<         }}<";
 
 
         /// <summary>
@@ -427,25 +428,28 @@ namespace ApiChange.Infrastructure
         /// Generate a leaving method trace. Normally called at the end of an using statement.
         /// </summary>
         /// <remarks>
-        /// When the method is left with an exception a second leaving statement with the exception is
-        /// traced. This is done for every exception only once. 
+        /// When the method is left with an exception and Exception tracing is enabled it will trace this
+        /// exception.
         /// </remarks>
         public void Dispose()
         {
-            if (TracerConfig.Instance.IsEnabled(myType, MessageTypes.InOut, myLevel))
+            if (TracerConfig.Instance.IsEnabled(myType, MessageTypes.Exception, myLevel))
             {
-                DateTime now = DateTime.Now;
-
                 // only print exception warning when we did not have an exception on the thread stack
                 // when we did enter this method. Otherwise we would print a warning while we entered and left a method while
                 // executing a catch handler altough in our called methods nothing has happened.
                 Exception currentException = ExceptionHelper.CurrentException;
-                if( currentException != null && Object.ReferenceEquals(myLastPrintedException,currentException) == false )
+                if (currentException != null && Object.ReferenceEquals(myLastPrintedException, currentException) == false)
                 {
                     myLastPrintedException = currentException;
-                    TraceMsg(MsgTypeOut, this.TypeMethodName, now, "Exception thrown: {0}", currentException);
+                    TraceMsg(MsgTypeException, this.TypeMethodName, DateTime.Now, "Exception thrown: {0}", currentException);
                 }
-                TraceMsg(MsgTypeOut, this.TypeMethodName,now, "Duration {0}", FormatDuration(now.Ticks-myEnterTime.Ticks));
+            }
+
+            if (TracerConfig.Instance.IsEnabled(myType, MessageTypes.InOut, myLevel))
+            {
+                DateTime now = DateTime.Now;
+                TraceMsg(MsgTypeOut, this.TypeMethodName, now, "Duration {0}", FormatDuration(now.Ticks - myEnterTime.Ticks));
             }
         }
 

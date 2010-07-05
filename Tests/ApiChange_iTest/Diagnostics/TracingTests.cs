@@ -162,7 +162,7 @@ namespace ApiChange.IntegrationTests.Diagnostics
 
         [Test]
         [ExpectedException(typeof(NotImplementedException))]
-        public void Demo_Show_Leaving_Trace_Wiht_Exception()
+        public void Demo_Show_Leaving_Trace_With_Exception()
         {
             TracerConfig.Reset("console");
             

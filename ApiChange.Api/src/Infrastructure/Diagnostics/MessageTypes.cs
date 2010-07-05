@@ -18,7 +18,8 @@ namespace ApiChange.Infrastructure
         Warning = 2,
         Error = 4,
         InOut = 8,
-        All = InOut | Info | Warning | Error
+        Exception = 16,
+        All = InOut | Info | Warning | Error | Exception
     }
 
     /// <summary>

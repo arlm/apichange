@@ -211,5 +211,35 @@ namespace UnitTests.Infrastructure.Diagnostics
             }
             Assert.AreEqual(ThreadCount * 5, stringTracer.Messages.Count);
         }
-    }
+
+        [Test]
+        public void Trace_Only_Exceptions()
+        {
+            TracerConfig.Reset("null;* Exception");
+            StringListTraceListener stringTracer = new StringListTraceListener();
+            TracerConfig.Listeners.Add(stringTracer);
+
+            const int Runs = 20;
+            for (int i = 0; i < Runs; i++)
+            {
+                string exStr = "Ex Nr"+i;
+                try
+                {
+                    using (Tracer tr1 = new Tracer(myType, "Enclosing Method"))
+                    {
+                        using (Tracer tracer = new Tracer(myType, "Thread Method"))
+                        {
+                            throw new NotImplementedException(exStr);
+                        }
+                    }
+                }
+                catch (Exception)
+                { }
+                Assert.AreEqual(i+1, stringTracer.Messages.Count);
+                Assert.IsTrue(stringTracer.Messages[i].Contains(exStr),
+                    String.Format("Got {0} but did not find substring {1}", stringTracer.Messages[i], exStr));
+            }
+        }
+    } 
+
 }
