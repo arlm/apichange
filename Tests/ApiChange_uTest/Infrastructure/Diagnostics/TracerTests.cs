@@ -240,6 +240,42 @@ namespace UnitTests.Infrastructure.Diagnostics
                     String.Format("Got {0} but did not find substring {1}", stringTracer.Messages[i], exStr));
             }
         }
+
+        [Test]
+        public void Can_Inject_Faults()
+        {
+            TracerConfig.Reset("null");
+            GenerateLevelTraces(Level.All);
+
+            Tracer.TraceEvent += (msgType, typemethod, time, msg) =>
+                {
+                    if (msgType == Tracer.MsgType.Error)
+                        throw new InvalidOperationException("Injectect Fault");
+                };
+
+            Assert.Throws<InvalidOperationException>(() => GenerateLevelTraces(Level.All));
+
+            TracerConfig.Reset(null);
+            GenerateLevelTraces(Level.All);
+        }
+
+        [Test]
+        public void Events_Can_Survive_TraceConfig_Reset()
+        {
+            TracerConfig.Reset("null");
+
+            Tracer.TraceEvent += (msgType, typemethod, time, msg) =>
+            {
+                if (msg == "Error trace")
+                    throw new InvalidOperationException("Injectect Fault");
+            };
+
+            Assert.Throws<InvalidOperationException>(() => GenerateLevelTraces(Level.All));
+            TracerConfig.Reset("null", false);
+            Assert.Throws<InvalidOperationException>(() => GenerateLevelTraces(Level.All));
+            TracerConfig.Reset("null", true);
+            GenerateLevelTraces(Level.All);
+        }
     } 
 
 }

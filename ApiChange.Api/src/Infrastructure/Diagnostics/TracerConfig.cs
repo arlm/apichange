@@ -58,8 +58,9 @@ namespace ApiChange.Infrastructure
         /// put the new config into place.
         /// </summary>
         /// <param name="cfg">The trace string format is of the form OutputDevice;TypeFilter MessageFilter; TypeFilter MessageFilter; ...</param>
+        /// <param name="bClearEvents">if true all registered trace callbacks are removed.</param>
         /// <returns>The old trace configuration string.</returns>
-        public static string Reset(string cfg)
+        public static string Reset(string cfg, bool bClearEvents)
         {
             lock (myLock)
             {
@@ -67,8 +68,23 @@ namespace ApiChange.Infrastructure
                 string old = Environment.GetEnvironmentVariable(TraceEnvVarName);
                 Environment.SetEnvironmentVariable(TraceEnvVarName, cfg);
                 Instance = new TracerConfig(Environment.GetEnvironmentVariable(TraceEnvVarName));
+                if (bClearEvents)
+                {
+                    Tracer.ClearEvents();
+                }
                 return old;
             }
+        }
+
+        /// <summary>
+        /// Re/Set trace configuration in a thread safe way by shutting down the already existing listeners and then 
+        /// put the new config into place.
+        /// </summary>
+        /// <param name="cfg">The trace string format is of the form OutputDevice;TypeFilter MessageFilter; TypeFilter MessageFilter; ...</param>
+        /// <returns>The old trace configuration string.</returns>
+        public static string Reset(string cfg)
+        {
+            return Reset(cfg, true);
         }
 
 

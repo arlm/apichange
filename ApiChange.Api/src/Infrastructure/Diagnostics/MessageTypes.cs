@@ -15,11 +15,12 @@ namespace ApiChange.Infrastructure
     {
         None = 0,
         Info = 1,
-        Warning = 2,
-        Error = 4,
-        InOut = 8,
-        Exception = 16,
-        All = InOut | Info | Warning | Error | Exception
+        Instrument = 2,
+        Warning = 4,
+        Error = 8,
+        InOut = 16,
+        Exception = 32,
+        All = InOut | Info | Instrument | Warning | Error | Exception
     }
 
     /// <summary>

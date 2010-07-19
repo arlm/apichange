@@ -43,13 +43,36 @@ namespace ApiChange.Infrastructure
             return type.FullQualifiedTypeName + "." + method;
         }
 
-        const string MsgTypeInfo      = "<Information>";
-        const string MsgTypeWarning   = "<Warning    >";
-        const string MsgTypeError     = "<Error      >";
-        const string MsgTypeException = "<Exception  >";
-        const string MsgTypeIn        = "<{{         >";
-        const string MsgTypeOut       = "<         }}<";
+        const string MsgTypeInfo       = "<Information>";
+        const string MsgTypeInstrument = "<Instrument >";
+        const string MsgTypeWarning    = "<Warning    >";
+        const string MsgTypeError      = "<Error      >";
+        const string MsgTypeException  = "<Exception  >";
+        const string MsgTypeIn         = "<{{         >";
+        const string MsgTypeOut        = "<         }}<";
 
+        public enum MsgType
+        {
+            None = 0,
+            Information,
+            Instrument,
+            Warning,
+            Error,
+            Exception,
+            In,
+            Out
+        }
+
+        static Dictionary<string, MsgType> MsgStr2Type = new Dictionary<string, MsgType>
+        {
+            {MsgTypeInfo, MsgType.Information},
+            {MsgTypeInstrument, MsgType.Instrument},
+            {MsgTypeWarning, MsgType.Warning},
+            {MsgTypeError, MsgType.Error},
+            {MsgTypeException, MsgType.Exception},
+            {MsgTypeIn, MsgType.In},
+            {MsgTypeOut, MsgType.Out}
+        };
 
         /// <summary>
         /// Create a new Tracer which traces method enter and leave (on Dispose)
@@ -213,6 +236,68 @@ namespace ApiChange.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Trace an instrumentation message with a given level.
+        /// </summary>
+        /// <remarks>The method is only executed if the INSTRUMENT conditional compilation symbol is enabled in your project settings. Otherwise all calls will
+        /// not be compiled into your binary. This level is useful for unit testing and custom fault injection.</remarks>
+        /// <param name="level">Trace Level. 1 is the high level overview, 5 is for high volume detailed traces.</param>
+        /// <param name="fmt">Trace message format string.</param>
+        /// <param name="args">Optional message format arguments.</param>
+        [Conditional("INSTRUMENT")]
+        public void Instrument(Level level, string fmt, params object[] args)
+        {
+            if (fmt == null)
+            {
+                throw new ArgumentNullException("fmt");
+            }
+
+            if (TracerConfig.Instance.IsEnabled(myType, MessageTypes.Instrument, level))
+            {
+                TraceMsg(MsgTypeInstrument, this.TypeMethodName, DateTime.Now, fmt, args);
+            }
+        }
+
+        /// <summary>
+        /// Trace an instrumentation message with a given level.
+        /// </summary>
+        /// <remarks>The method is only executed if the INSTRUMENT conditional compilation symbol is enabled in your project settings. Otherwise all calls will
+        /// not be compiled into your binary. This level is useful for unit testing and custom fault injection.</remarks>
+        /// <param name="fmt">Trace message format string.</param>
+        /// <param name="args">Optional message format arguments.</param>
+        [Conditional("INSTRUMENT")]
+        public void Instrument(string fmt, params object[] args)
+        {
+            Instrument(myLevel, fmt, args);
+        }
+
+        /// <summary>
+        ///  Trace an instrumentation message with a given level.
+        /// </summary>
+        /// <remarks>The method is only executed if the INSTRUMENT conditional compilation symbol is enabled in your project settings. Otherwise all calls will
+        /// not be compiled into your binary. This level is useful for unit testing and custom fault injection.</remarks>
+        /// <param name="level">Trace Level. 1 is the high level overview, 5 is for high volume detailed traces.</param>
+        /// <param name="type">TypeHandle instance which identifies your class type. This instance should be a static instance of your type.</param>
+        /// <param name="method">The method name of your current method.</param>
+        /// <param name="fmt">Trace message format string</param>
+        /// <param name="args">Optional message format arguments.</param>
+        [Conditional("INSTRUMENT")]
+        public static void Instrument(Level level, TypeHashes type, string method, string fmt, params object[] args)
+        {
+            if (fmt == null)
+            {
+                throw new ArgumentNullException(fmt);
+            }
+            if (type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
+
+            if (TracerConfig.Instance.IsEnabled(type, MessageTypes.Instrument, level))
+            {
+                TraceMsg(MsgTypeInstrument, GenerateTypeMethodName(type, method), DateTime.Now, fmt, args);
+            }
+        }
 
         /// <summary>
         /// Write a warning trace to the configured output device.
@@ -453,6 +538,18 @@ namespace ApiChange.Infrastructure
             }
         }
 
+        public delegate void TraceCallBack(MsgType msgType, string typeMethodName, DateTime time, string message);
+
+        /// <summary>
+        /// This callback is called whenever a trace is encountered which matches the current filter
+        /// </summary>
+        public static event TraceCallBack TraceEvent;
+
+        static internal void ClearEvents()
+        {
+             TraceEvent = null;
+        }
+
         private string FormatDuration(long duration)
         {
             // When tracing is reconfigured at runtime we might not 
@@ -468,6 +565,11 @@ namespace ApiChange.Infrastructure
         static void TraceMsg(string msgTypeString, string typeMethodName, DateTime time, string fmt, params object[] args)
         {
             string traceMsg = FormatStringSafe(fmt, args);
+            if (TraceEvent != null)
+            {
+                TraceEvent(MsgStr2Type[msgTypeString], typeMethodName, time, traceMsg);
+            }
+
             traceMsg = String.Join(" ", new string[] { FormatTime(time), TracerConfig.Instance.PidAndTid, msgTypeString, typeMethodName, traceMsg, Environment.NewLine });
             TracerConfig.Instance.WriteTraceMessage(traceMsg);
         }

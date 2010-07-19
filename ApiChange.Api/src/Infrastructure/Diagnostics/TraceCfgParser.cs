@@ -23,6 +23,7 @@ namespace ApiChange.Infrastructure
              {"info", MessageTypes.Info},
              {"i", MessageTypes.Info},
              {"information", MessageTypes.Info},
+             {"instrument", MessageTypes.Instrument},
              {"warning", MessageTypes.Warning},
              {"warn", MessageTypes.Warning},
              {"w", MessageTypes.Warning},
